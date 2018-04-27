@@ -57,13 +57,20 @@ const books = [
   }];
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  const url = 'mongodb://library-app1:urXgVT8PKQUOk2ynrykQZYB8fhn6whx2YtgCjXwLDA8U47A6SZlKqHkwUg2PscPRISgpIkUzQ9nEESCTHMSOYw==@library-app1.documents.azure.com:10255/?ssl=true&replicaSet=globaldb';
-  const dbName = 'library';
+  const url = 'mongodb://library-nodejsdb.documents.azure.com:10255/?ssl=true&replicaSet=globaldb';
+  const password = 'msCk2OEDAXV6LFBGwusgYDjAqwkGIqSrkt8fbFH2d6wnG54D35qLXa5XOGCdJTmmq2wFjZPn51lbRgxxD2ENfA==';
+  const dbName = 'library-nodejsdb';
+  const user = 'library-nodejsdb';
   
   (async function mongo(){
 	  let client;
 	  try{
-		  client = await MongoClient.connect(url);
+		  client = await MongoClient.connect(url,{
+        auth:{
+          user,
+          password
+        }
+      });
 		  
 		  const db = client.db(dbName);
 		  const response = await db.collection('books').insertMany(books);
